@@ -101,3 +101,8 @@ GitHub Pages and standard public-repository GitHub Actions have free tiers. Larg
 - [ ] Import only verified original OG VHS videos; add metadata as recovered
 - [ ] Select and configure actual video host
 - [ ] Connect OGVHS.com and verify redirects/SEO once ready
+
+
+## Initial 10-ID index (October 29, 2026)
+
+The first ten entries are **identifier-only** records derived from AppleDouble `._*.mp4` filenames observed in the Google Drive `Lacie/VineDatesUpdated` folder. AppleDouble sidecars are **not playable videos**. Dropbox `VineSubs` had matching `.sub.mp4` filenames but they were zero-byte files. Therefore NO video files, captions, posting dates, or hashtags were restored for these entries. The site labels them MEDIA PENDING. Video files must be recovered and hosted separately before playback works.
