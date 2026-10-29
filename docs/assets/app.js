@@ -52,16 +52,41 @@
     return card;
   }
   function activatePreviews(container) {
+    // Hover is only available with a fine pointer. Browsers may prevent audio
+    // until the visitor has interacted with the page; fall back to muted preview.
     if (!container || reduced || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
     container.querySelectorAll('video[data-preview-src]').forEach(video => {
       const card = video.closest('.vine-card');
       if (!card) return;
+      video.loop = true;
+      const soundButton = element('button', 'preview-audio', 'ENABLE SOUND');
+      soundButton.type = 'button';
+      soundButton.title = 'Your browser blocked hover audio. Click to enable sound.';
+      soundButton.setAttribute('aria-label', 'Enable audio preview for this clip');
+      soundButton.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        video.muted = false;
+        video.play().then(() => soundButton.remove()).catch(() => {
+          video.muted = true;
+        });
+      });
       card.addEventListener('pointerenter', () => {
         if (!video.src) video.src = video.dataset.previewSrc;
-        video.play().catch(() => {});
+        video.muted = false;
+        video.volume = 1;
+        video.play().catch(() => {
+          // Audio autoplay can be blocked by browser settings. Never break preview.
+          if (!card.matches(':hover')) return;
+          video.muted = true;
+          card.append(soundButton);
+          video.play().catch(() => {});
+        });
       });
       card.addEventListener('pointerleave', () => {
+        soundButton.remove();
         video.pause();
+        video.muted = true;
         try { video.currentTime = 0; } catch (_) {}
       });
     });
@@ -105,7 +130,7 @@
       results.replaceChildren(...current.slice(0, showing).map(createCard));
       activatePreviews(results);
       empty.style.display = current.length ? 'none' : 'block';
-      empty.textContent = all.length ? 'No matching Vines. Try another search.' : 'No clips are cataloged yet. The archive will populate as original files are imported.';
+      empty.textContent = all.length ? 'No matching Vines. Try another search.' : 'No clips are cataloged yet. The vault will fill as original files are recovered.';
       more.style.display = showing < current.length ? 'block' : 'none';
     }
     let timer;
@@ -140,6 +165,12 @@
     }
   });
   const loop = document.getElementById('toggle-loop');
+  const player = document.getElementById('vine-player');
+  if (player && loop) {
+    player.loop = true;
+    loop.setAttribute('aria-pressed', 'true');
+    loop.textContent = 'LOOP ON ↻';
+  }
   loop?.addEventListener('click', () => {
     const video = document.getElementById('vine-player');
     if (!video) return;

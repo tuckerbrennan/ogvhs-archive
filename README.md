@@ -116,3 +116,7 @@ Most filenames (e.g. `IMG_2915.mp4`) **are not original Vine identifiers**. To a
 `data/pending_vines.json` preserves the previous ten sidecar-only metadata references separately; these are intentionally excluded from the playable gallery. `mediaPath` and `posterPath` are site-relative, resolved by `tools/build.py` against the configured environment base path. Nothing links permanently to `tuckerbrennan.github.io`, so the final domain switch remains portable.
 
 To add a video from a local source, create an optimized MP4 and JPEG thumbnail under `docs/media/<archive-ref>.*`, add its record to `data/vines.json`, build with `python3 tools/build.py`, and replace `docs/` with `dist/`. Never put original full-resolution source footage into the public repository.
+
+## Vault presentation settings (October 29, 2026)
+
+The public navigation calls the gallery **The Vault**, keeping the existing `/archive/` URL intact to avoid breaking bookmarks. The overly technical “Every clip has an ID” feature box was removed. Clip pages start with **looping ON** and retain a loop toggle. Desktop hover previews attempt audio playback; browsers that block hover-triggered sound fall back to a muted preview with a visible **ENABLE SOUND** button that can be clicked. Touch/mobile visitors play sound with their usual tap on a video detail page.

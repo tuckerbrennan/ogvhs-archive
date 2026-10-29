@@ -44,6 +44,31 @@ class ArchiveTests(unittest.TestCase):
         self.assertEqual(i.normalize_date('2014-03-02'),'2014-03-02')
         self.assertEqual(i.normalize_date('1400000000'),'2014-05-13T16:53:20Z')
 
+    def test_playable_clip_loops_by_default_and_can_be_toggled(self):
+        v = {'vineId': '50W0x3Pu6xJ', 'videoUrl': '/ogvhs-archive/media/example.mp4',
+             'thumbnailUrl': None, 'rawCaption': None, 'tags': [],
+             'publishedAt': None, 'dateLabel': 'Date unknown',
+             'idKind': 'vine', 'sourceFilename': 'example.mp4'}
+        markup = b.detail_page(v)
+        self.assertIn('<video id="vine-player" controls loop playsinline', markup)
+        self.assertIn('id="toggle-loop" type="button" aria-pressed="true">LOOP ON ↻', markup)
+        js = (ROOT / 'assets/app.js').read_text(encoding='utf-8')
+        self.assertIn('video.loop = !video.loop;', js)
+        self.assertIn("loop.textContent = video.loop ? 'LOOP ON ↻' : 'LOOP OFF';", js)
+
+    def test_vault_branding_and_hover_audio(self):
+        markup=b.home([], {})
+        self.assertIn('In the<br>vault.',markup)
+        self.assertNotIn('Every clip has an ID.',markup)
+        self.assertNotIn('FIND IT',markup)
+        self.assertIn('A NOTE FROM THE VAULT', markup)
+        vmarkup=b.browser([])
+        self.assertIn('THE VAULT.',vmarkup)
+        js=(ROOT/'assets/app.js').read_text(encoding='utf-8')
+        self.assertIn('video.muted = false;',js)
+        self.assertIn('ENABLE SOUND',js)
+        self.assertIn('video.loop = true;',js)
+
     def test_build_generates_shareable_staging_and_production_paths(self):
         with tempfile.TemporaryDirectory() as temp:
             oldroot,olddist,oldenv,oldbase,oldsite=b.ROOT,b.DIST,b.ENV,b.BASE_PATH,b.SITE_URL
