@@ -17,12 +17,16 @@ Note: The staging build uses the GitHub Pages base path `/ogvhs-archive/`. For l
 
 ## Deploy on GitHub Pages (staging)
 
-1. In GitHub, create the **public** repository `tuckerbrennan/ogvhs-archive` with the default `main` branch. Do not add a readme if uploading this complete project in one commit; or replace GitHub's starter README with this one.
-2. Upload this project's source files (including `.github/workflows/deploy.yml`, `tools/`, `assets/`, `data/`, and `config.json`) to the repository root. Don't upload the ZIP itself or the `dist/` directory.
-3. In **Settings → Pages → Build and deployment**, choose **GitHub Actions**.
-4. Push to `main` (or manually run the workflow); the Actions workflow builds and publishes the site at `https://tuckerbrennan.github.io/ogvhs-archive/`.
+The public repository is `tuckerbrennan/ogvhs-archive`. The `docs/` directory holds a prebuilt site so GitHub Pages can publish without GitHub Actions.
 
-The staging site is **publicly accessible** when GitHub Pages is enabled, although the pages have `noindex` and `robots.txt` instructions. Do not use it for confidential unpublished videos.
+1. Go to https://github.com/tuckerbrennan/ogvhs-archive/settings/pages.
+2. Under **Build and deployment**, select **Deploy from a branch**.
+3. Set branch to **main** and folder to **/docs**, then **Save**.
+4. After GitHub Pages publishes, open https://tuckerbrennan.github.io/ogvhs-archive/.
+
+To update the archive, edit `data/vines.json`, run `python3 tools/build.py`, copy generated `dist/` files into `docs/`, and commit both. The included GitHub Actions workflow is optional and currently not needed.
+
+Staging is publicly accessible but has `noindex` and `robots.txt` instructions; these are not access controls.
 
 ## Production switch for OGVHS.com — no DNS changes now
 
@@ -31,7 +35,7 @@ All internal links are built from `config.json`/environment variables. There are
 - Staging: `/ogvhs-archive/v/50W0x3Pu6xJ/`
 - Future production: `/v/50W0x3Pu6xJ/`
 
-When you are ready to connect `ogvhs.com`, set `OGVHS_ENV=production` in the GitHub Actions build step and configure the Pages custom domain in GitHub and your DNS provider. Production builds use `https://ogvhs.com`, an empty base path, `CNAME`, canonical links, and a sitemap; staging builds use a prefixed path and noindex tags. **Do not enable the production environment before domain verification and DNS setup.** GitHub Pages custom-domain redirects may be available after the domain is configured, but do not assume that every existing staging URL will permanently redirect; verify links during launch.
+When you are ready to connect `ogvhs.com`, run `OGVHS_ENV=production python3 tools/build.py`, copy the output into `docs/`, and configure the Pages custom domain in GitHub and your DNS provider. Production builds use `https://ogvhs.com`, an empty base path, `CNAME`, canonical links, and a sitemap; staging builds use a prefixed path and noindex tags. **Do not enable the production environment before domain verification and DNS setup.** GitHub Pages custom-domain redirects may be available after the domain is configured, but do not assume that every existing staging URL will permanently redirect; verify links during launch.
 
 If a different hosting provider is chosen, the build can move with no application rewrite.
 
@@ -91,8 +95,9 @@ GitHub Pages and standard public-repository GitHub Actions have free tiers. Larg
 - [x] Portable staging/production configuration
 - [x] Filename and metadata import tool
 - [x] GitHub Actions Pages deployment workflow
-- [ ] Create the new GitHub repository (requires GitHub's website; this GitHub connection doesn't expose repository creation)
-- [ ] Push site files and enable GitHub Pages
+- [x] Create the GitHub repository
+- [x] Push source and prebuilt site files
+- [ ] Set GitHub Pages to **Deploy from a branch** using **main /docs**
 - [ ] Import only verified original OG VHS videos; add metadata as recovered
 - [ ] Select and configure actual video host
 - [ ] Connect OGVHS.com and verify redirects/SEO once ready

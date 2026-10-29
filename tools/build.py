@@ -32,7 +32,9 @@ def esc(value):
 
 
 def route(page=""):
-    return BASE_PATH + page.strip("/") + ("/" if page.strip("/") else "")
+    """Resolve a portable site path; do not append slashes to asset filenames."""
+    clean = page.strip("/")
+    return BASE_PATH + clean + ("/" if clean and not Path(clean).suffix else "")
 
 
 def abs_route(page=""):
