@@ -1,0 +1,112 @@
+[
+  {
+    "archive_id": "m91dcee7a95",
+    "source_filename": "IMG_2915.mp4",
+    "source_sha256": "91dcee7a95017cc7381c00799323a274d037d3287bcf810e7924339807702036",
+    "duration_seconds": 6.44,
+    "source_bytes": 836114,
+    "video_bytes": 243343,
+    "poster_bytes": 8930,
+    "width": 480,
+    "height": 854
+  },
+  {
+    "archive_id": "m605933ba38",
+    "source_filename": "Mah08224 112-6-17rf18.00_3.mp4",
+    "source_sha256": "605933ba38125ead5c9f2aee178f8bcf406f749f9c20de1c7d272abd5347a0ba",
+    "duration_seconds": 9.27,
+    "source_bytes": 3388328,
+    "video_bytes": 355229,
+    "poster_bytes": 8916,
+    "width": 604,
+    "height": 512
+  },
+  {
+    "archive_id": "mba8cfe73e7",
+    "source_filename": "IMG_3012.mp4",
+    "source_sha256": "ba8cfe73e7f07d1040ca07a80ffc846ae402fcfe789d12237dbb9973f9ea4c12",
+    "duration_seconds": 6.67,
+    "source_bytes": 2500421,
+    "video_bytes": 451185,
+    "poster_bytes": 22973,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "archive_id": "m94eaa87a29",
+    "source_filename": "1224316917347909632-original.mov",
+    "source_sha256": "94eaa87a2908ad6d2fe4c893e6839df3e6e02c5f62a4786e42571049e5381f14",
+    "duration_seconds": 6.67,
+    "source_bytes": 1107632,
+    "video_bytes": 404789,
+    "poster_bytes": 16410,
+    "width": 480,
+    "height": 480
+  },
+  {
+    "archive_id": "m6e717bbc51",
+    "source_filename": "1176390630818406400-original.mov",
+    "source_sha256": "6e717bbc51f091f0b2684d531cafe4aa0ed35ed66e52971fe8651b98c2333b2d",
+    "duration_seconds": 6.67,
+    "source_bytes": 1148326,
+    "video_bytes": 796698,
+    "poster_bytes": 10018,
+    "width": 480,
+    "height": 480
+  },
+  {
+    "archive_id": "m840cc64660",
+    "source_filename": "IMG_3070.mp4",
+    "source_sha256": "840cc646607fe6cc7eca83cae4cb976b12bcab825609eac60e33f82a994e2919",
+    "duration_seconds": 5.57,
+    "source_bytes": 1733443,
+    "video_bytes": 135278,
+    "poster_bytes": 10788,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "archive_id": "mba6b25e589",
+    "source_filename": "IMG_5493.mp4",
+    "source_sha256": "ba6b25e58918aaa60e3f05e84454901456b25185aaacb6e6c2229f935732e6ed",
+    "duration_seconds": 8.2,
+    "source_bytes": 4023084,
+    "video_bytes": 333599,
+    "poster_bytes": 11833,
+    "width": 682,
+    "height": 512
+  },
+  {
+    "archive_id": "m665bf6bc01",
+    "source_filename": "IMG_5683.mp4",
+    "source_sha256": "665bf6bc0152f266c4b05777ebf43a2f3b6ea34f7e03448ba45b2784f7a621af",
+    "duration_seconds": 6.44,
+    "source_bytes": 1508740,
+    "video_bytes": 467876,
+    "poster_bytes": 15386,
+    "width": 480,
+    "height": 480
+  },
+  {
+    "archive_id": "m24d5cc986d",
+    "source_filename": "IMG_5774.mp4",
+    "source_sha256": "24d5cc986d4055fa06017348f25956818f725af1ecb799cd5d51e8272339a222",
+    "duration_seconds": 5.77,
+    "source_bytes": 2215229,
+    "video_bytes": 382216,
+    "poster_bytes": 22988,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "archive_id": "mabc6b4495a",
+    "source_filename": "ABC 1991-10-15 and 1991-10-18.mp4",
+    "source_sha256": "abc6b4495a776dbe40eea7cfa73e154d8781a6a2608d4a246fb155da809a3b10",
+    "duration_seconds": 9.68,
+    "source_bytes": 54276686,
+    "video_bytes": 619168,
+    "poster_bytes": 18420,
+    "width": 720,
+    "height": 480
+  }
+]

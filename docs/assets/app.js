@@ -15,7 +15,7 @@
     const card = element('article', 'vine-card');
     const cover = element('a');
     cover.href = to(`v/${v.vineId}`);
-    cover.setAttribute('aria-label', `View Vine ${v.vineId}`);
+    cover.setAttribute('aria-label', `View clip ${v.vineId}`);
     const thumbnail = element('div', 'vine-thumb');
     if (v.videoUrl) {
       const vid = element('video');
@@ -42,7 +42,7 @@
     thumbnail.append(element('span', 'thumb-play', '▶'));
     cover.append(thumbnail);
     const heading = element('h3');
-    const label = element('a', '', (v.rawCaption || 'Caption not recovered').replace(/\n/g, ' ').slice(0, 110));
+    const label = element('a', '', (v.rawCaption || (v.idKind === 'archive' ? `Recovered video · ${v.sourceFilename || v.vineId}` : 'Caption not recovered')).replace(/\n/g, ' ').slice(0, 110));
     label.href = cover.href;
     heading.append(label);
     const meta = element('p', 'card-meta');
@@ -99,7 +99,7 @@
       const query = (input?.value || '').trim().toLowerCase().replace(/^#/, '');
       current = sorted(all.filter(v =>
         (!tag || v.tags.includes(tag)) &&
-        (!query || [v.vineId, v.rawCaption || '', ...v.tags].some(s => s.toLowerCase().includes(query)))
+        (!query || [v.vineId, v.sourceFilename || '', v.rawCaption || '', ...v.tags].some(s => s.toLowerCase().includes(query)))
       ));
       count.textContent = `${current.length} RECORD${current.length === 1 ? '' : 'S'}`;
       results.replaceChildren(...current.slice(0, showing).map(createCard));

@@ -1,152 +1,162 @@
 [
   {
-    "vineId": "50K7auimX5W",
+    "vineId": "m91dcee7a95",
+    "idKind": "archive",
     "rawCaption": null,
     "publishedAt": null,
-    "videoUrl": null,
-    "thumbnailUrl": null,
     "tags": [],
-    "sourceFilename": null,
-    "sourceEvidence": {
-      "folder": "VineDatesUpdated",
-      "observedFilename": "._50K7auimX5W.mp4",
-      "type": "AppleDouble metadata sidecar only; playable MP4 not yet retrieved"
-    },
-    "restoredAt": null
+    "sourceFilename": "IMG_2915.mp4",
+    "mediaPath": "media/m91dcee7a95.mp4",
+    "posterPath": "media/m91dcee7a95.jpg",
+    "restoredAt": "2026-10-29",
+    "archiveEvidence": {
+      "identifierMethod": "SHA-256-based archive reference; not an original Vine ID",
+      "sha256": "91dcee7a95017cc7381c00799323a274d037d3287bcf810e7924339807702036",
+      "durationSeconds": 6.44
+    }
   },
   {
-    "vineId": "50W0x3Pu6xJ",
+    "vineId": "m605933ba38",
+    "idKind": "archive",
     "rawCaption": null,
     "publishedAt": null,
-    "videoUrl": null,
-    "thumbnailUrl": null,
     "tags": [],
-    "sourceFilename": null,
-    "sourceEvidence": {
-      "folder": "VineDatesUpdated",
-      "observedFilename": "._50W0x3Pu6xJ.mp4",
-      "type": "AppleDouble metadata sidecar only; playable MP4 not yet retrieved"
-    },
-    "restoredAt": null
+    "sourceFilename": "Mah08224 112-6-17rf18.00_3.mp4",
+    "mediaPath": "media/m605933ba38.mp4",
+    "posterPath": "media/m605933ba38.jpg",
+    "restoredAt": "2026-10-29",
+    "archiveEvidence": {
+      "identifierMethod": "SHA-256-based archive reference; not an original Vine ID",
+      "sha256": "605933ba38125ead5c9f2aee178f8bcf406f749f9c20de1c7d272abd5347a0ba",
+      "durationSeconds": 9.27
+    }
   },
   {
-    "vineId": "51mPPUPgAvd",
+    "vineId": "mba8cfe73e7",
+    "idKind": "archive",
     "rawCaption": null,
     "publishedAt": null,
-    "videoUrl": null,
-    "thumbnailUrl": null,
     "tags": [],
-    "sourceFilename": null,
-    "sourceEvidence": {
-      "folder": "VineDatesUpdated",
-      "observedFilename": "._51mPPUPgAvd.mp4",
-      "type": "AppleDouble metadata sidecar only; playable MP4 not yet retrieved"
-    },
-    "restoredAt": null
+    "sourceFilename": "IMG_3012.mp4",
+    "mediaPath": "media/mba8cfe73e7.mp4",
+    "posterPath": "media/mba8cfe73e7.jpg",
+    "restoredAt": "2026-10-29",
+    "archiveEvidence": {
+      "identifierMethod": "SHA-256-based archive reference; not an original Vine ID",
+      "sha256": "ba8cfe73e7f07d1040ca07a80ffc846ae402fcfe789d12237dbb9973f9ea4c12",
+      "durationSeconds": 6.67
+    }
   },
   {
-    "vineId": "523wFgHE6Qu",
+    "vineId": "m94eaa87a29",
+    "idKind": "archive",
     "rawCaption": null,
     "publishedAt": null,
-    "videoUrl": null,
-    "thumbnailUrl": null,
     "tags": [],
-    "sourceFilename": null,
-    "sourceEvidence": {
-      "folder": "VineDatesUpdated",
-      "observedFilename": "._523wFgHE6Qu.mp4",
-      "type": "AppleDouble metadata sidecar only; playable MP4 not yet retrieved"
-    },
-    "restoredAt": null
+    "sourceFilename": "1224316917347909632-original.mov",
+    "mediaPath": "media/m94eaa87a29.mp4",
+    "posterPath": "media/m94eaa87a29.jpg",
+    "restoredAt": "2026-10-29",
+    "archiveEvidence": {
+      "identifierMethod": "SHA-256-based archive reference; not an original Vine ID",
+      "sha256": "94eaa87a2908ad6d2fe4c893e6839df3e6e02c5f62a4786e42571049e5381f14",
+      "durationSeconds": 6.67
+    }
   },
   {
-    "vineId": "523xUM0nHPx",
+    "vineId": "m6e717bbc51",
+    "idKind": "archive",
     "rawCaption": null,
     "publishedAt": null,
-    "videoUrl": null,
-    "thumbnailUrl": null,
     "tags": [],
-    "sourceFilename": null,
-    "sourceEvidence": {
-      "folder": "VineDatesUpdated",
-      "observedFilename": "._523xUM0nHPx.mp4",
-      "type": "AppleDouble metadata sidecar only; playable MP4 not yet retrieved"
-    },
-    "restoredAt": null
+    "sourceFilename": "1176390630818406400-original.mov",
+    "mediaPath": "media/m6e717bbc51.mp4",
+    "posterPath": "media/m6e717bbc51.jpg",
+    "restoredAt": "2026-10-29",
+    "archiveEvidence": {
+      "identifierMethod": "SHA-256-based archive reference; not an original Vine ID",
+      "sha256": "6e717bbc51f091f0b2684d531cafe4aa0ed35ed66e52971fe8651b98c2333b2d",
+      "durationSeconds": 6.67
+    }
   },
   {
-    "vineId": "52qn3UAW1X3",
+    "vineId": "m840cc64660",
+    "idKind": "archive",
     "rawCaption": null,
     "publishedAt": null,
-    "videoUrl": null,
-    "thumbnailUrl": null,
     "tags": [],
-    "sourceFilename": null,
-    "sourceEvidence": {
-      "folder": "VineDatesUpdated",
-      "observedFilename": "._52qn3UAW1X3.mp4",
-      "type": "AppleDouble metadata sidecar only; playable MP4 not yet retrieved"
-    },
-    "restoredAt": null
+    "sourceFilename": "IMG_3070.mp4",
+    "mediaPath": "media/m840cc64660.mp4",
+    "posterPath": "media/m840cc64660.jpg",
+    "restoredAt": "2026-10-29",
+    "archiveEvidence": {
+      "identifierMethod": "SHA-256-based archive reference; not an original Vine ID",
+      "sha256": "840cc646607fe6cc7eca83cae4cb976b12bcab825609eac60e33f82a994e2919",
+      "durationSeconds": 5.57
+    }
   },
   {
-    "vineId": "52WA61wzA1Q",
+    "vineId": "mba6b25e589",
+    "idKind": "archive",
     "rawCaption": null,
     "publishedAt": null,
-    "videoUrl": null,
-    "thumbnailUrl": null,
     "tags": [],
-    "sourceFilename": null,
-    "sourceEvidence": {
-      "folder": "VineDatesUpdated",
-      "observedFilename": "._52WA61wzA1Q.mp4",
-      "type": "AppleDouble metadata sidecar only; playable MP4 not yet retrieved"
-    },
-    "restoredAt": null
+    "sourceFilename": "IMG_5493.mp4",
+    "mediaPath": "media/mba6b25e589.mp4",
+    "posterPath": "media/mba6b25e589.jpg",
+    "restoredAt": "2026-10-29",
+    "archiveEvidence": {
+      "identifierMethod": "SHA-256-based archive reference; not an original Vine ID",
+      "sha256": "ba6b25e58918aaa60e3f05e84454901456b25185aaacb6e6c2229f935732e6ed",
+      "durationSeconds": 8.2
+    }
   },
   {
-    "vineId": "52WgxYvA5iX",
+    "vineId": "m665bf6bc01",
+    "idKind": "archive",
     "rawCaption": null,
     "publishedAt": null,
-    "videoUrl": null,
-    "thumbnailUrl": null,
     "tags": [],
-    "sourceFilename": null,
-    "sourceEvidence": {
-      "folder": "VineDatesUpdated",
-      "observedFilename": "._52WgxYvA5iX.mp4",
-      "type": "AppleDouble metadata sidecar only; playable MP4 not yet retrieved"
-    },
-    "restoredAt": null
+    "sourceFilename": "IMG_5683.mp4",
+    "mediaPath": "media/m665bf6bc01.mp4",
+    "posterPath": "media/m665bf6bc01.jpg",
+    "restoredAt": "2026-10-29",
+    "archiveEvidence": {
+      "identifierMethod": "SHA-256-based archive reference; not an original Vine ID",
+      "sha256": "665bf6bc0152f266c4b05777ebf43a2f3b6ea34f7e03448ba45b2784f7a621af",
+      "durationSeconds": 6.44
+    }
   },
   {
-    "vineId": "52WPdIbtAjM",
+    "vineId": "m24d5cc986d",
+    "idKind": "archive",
     "rawCaption": null,
     "publishedAt": null,
-    "videoUrl": null,
-    "thumbnailUrl": null,
     "tags": [],
-    "sourceFilename": null,
-    "sourceEvidence": {
-      "folder": "VineDatesUpdated",
-      "observedFilename": "._52WPdIbtAjM.mp4",
-      "type": "AppleDouble metadata sidecar only; playable MP4 not yet retrieved"
-    },
-    "restoredAt": null
+    "sourceFilename": "IMG_5774.mp4",
+    "mediaPath": "media/m24d5cc986d.mp4",
+    "posterPath": "media/m24d5cc986d.jpg",
+    "restoredAt": "2026-10-29",
+    "archiveEvidence": {
+      "identifierMethod": "SHA-256-based archive reference; not an original Vine ID",
+      "sha256": "24d5cc986d4055fa06017348f25956818f725af1ecb799cd5d51e8272339a222",
+      "durationSeconds": 5.77
+    }
   },
   {
-    "vineId": "52WTMtYwzug",
+    "vineId": "mabc6b4495a",
+    "idKind": "archive",
     "rawCaption": null,
     "publishedAt": null,
-    "videoUrl": null,
-    "thumbnailUrl": null,
     "tags": [],
-    "sourceFilename": null,
-    "sourceEvidence": {
-      "folder": "VineDatesUpdated",
-      "observedFilename": "._52WTMtYwzug.mp4",
-      "type": "AppleDouble metadata sidecar only; playable MP4 not yet retrieved"
-    },
-    "restoredAt": null
+    "sourceFilename": "ABC 1991-10-15 and 1991-10-18.mp4",
+    "mediaPath": "media/mabc6b4495a.mp4",
+    "posterPath": "media/mabc6b4495a.jpg",
+    "restoredAt": "2026-10-29",
+    "archiveEvidence": {
+      "identifierMethod": "SHA-256-based archive reference; not an original Vine ID",
+      "sha256": "abc6b4495a776dbe40eea7cfa73e154d8781a6a2608d4a246fb155da809a3b10",
+      "durationSeconds": 9.68
+    }
   }
 ]

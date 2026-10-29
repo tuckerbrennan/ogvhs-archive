@@ -2,7 +2,7 @@
 
 A responsive, independent archive of original OG VHS Vine videos. Zero paid builder or database dependencies.
 
-> **Status:** The site is built but the verified archive is intentionally empty. No original captions, dates, or videos have been fabricated. No videos are stored in GitHub.
+> **Status:** Staging contains 10 playable user-supplied web copies. Original captions, posting dates, and Vine IDs remain unverified and are not fabricated. Original-resolution sources are kept outside GitHub.
 
 ## Local preview and build
 
@@ -13,20 +13,18 @@ python3 tools/build.py
 python3 -m http.server 8000 --directory dist
 ```
 
-Note: The staging build uses the GitHub Pages base path `/ogvhs-archive/`. For local testing on `http://localhost:8000/`, use `OGVHS_BASE_PATH=/ python3 tools/build.py` and then open `http://localhost:8000/`. Restore staging settings by running `python3 tools/build.py` before committing if you manually upload `dist` (GitHub Actions rebuilds automatically).
+Note: The staging build uses the GitHub Pages base path `/ogvhs-archive/`. For local testing on `http://localhost:8000/`, use `OGVHS_BASE_PATH=/ python3 tools/build.py` and then open `http://localhost:8000/`. Restore staging settings by running `python3 tools/build.py` before committing if you manually upload `dist` (the docs branch publisher does not rebuild automatically).
 
 ## Deploy on GitHub Pages (staging)
 
-The public repository is `tuckerbrennan/ogvhs-archive`. The `docs/` directory holds a prebuilt site so GitHub Pages can publish without GitHub Actions.
+The public GitHub repository is `tuckerbrennan/ogvhs-archive`. The `docs/` folder contains a **prebuilt version of the site**, allowing GitHub Pages to publish it directly without requiring GitHub Actions.
 
-1. Go to https://github.com/tuckerbrennan/ogvhs-archive/settings/pages.
-2. Under **Build and deployment**, select **Deploy from a branch**.
-3. Set branch to **main** and folder to **/docs**, then **Save**.
-4. After GitHub Pages publishes, open https://tuckerbrennan.github.io/ogvhs-archive/.
+1. Open https://github.com/tuckerbrennan/ogvhs-archive/settings/pages
+2. Under **Build and deployment**, select **Deploy from a branch** (not GitHub Actions).
+3. Choose branch **main** and folder **/docs**, then click **Save**.
+4. GitHub will publish the staging site to https://tuckerbrennan.github.io/ogvhs-archive/ after deployment.
 
-To update the archive, edit `data/vines.json`, run `python3 tools/build.py`, copy generated `dist/` files into `docs/`, and commit both. The included GitHub Actions workflow is optional and currently not needed.
-
-Staging is publicly accessible but has `noindex` and `robots.txt` instructions; these are not access controls.
+To update content, edit `data/vines.json`, then run `python3 tools/build.py` locally and copy the generated `dist/` contents into `docs/`. Commit **both** the content changes and the regenerated `docs/` files. An optional GitHub Actions workflow is included for when workflow runners are available, but is not required. The site is accessible publicly once Pages is enabled, though staging pages request `noindex` in their HTML and `robots.txt`; these are requests to search engines, not privacy guarantees.
 
 ## Production switch for OGVHS.com — no DNS changes now
 
@@ -85,7 +83,7 @@ python3 tools/build.py
 
 ## Hosting cost
 
-GitHub Pages and standard public-repository GitHub Actions have free tiers. Large video files should live on a separate public media host; video storage and playback may have separate usage charges.
+GitHub Pages is free for public repositories; this site does not require GitHub Actions. Large video files should live on a separate public media host; video storage and playback may have separate usage charges.
 
 ## Status / next steps
 
@@ -95,14 +93,26 @@ GitHub Pages and standard public-repository GitHub Actions have free tiers. Larg
 - [x] Portable staging/production configuration
 - [x] Filename and metadata import tool
 - [x] GitHub Actions Pages deployment workflow
-- [x] Create the GitHub repository
-- [x] Push source and prebuilt site files
-- [ ] Set GitHub Pages to **Deploy from a branch** using **main /docs**
+- [x] Create the public GitHub repository `tuckerbrennan/ogvhs-archive`
+- [x] Push site files and prebuilt `docs/` directory
+- [ ] Select **Deploy from a branch** and **main /docs** in Pages settings
 - [ ] Import only verified original OG VHS videos; add metadata as recovered
 - [ ] Select and configure actual video host
 - [ ] Connect OGVHS.com and verify redirects/SEO once ready
 
+## Initial 10-ID import (2026-10-29)
 
-## Initial 10-ID index (October 29, 2026)
+The first ten entries are **identifier-only records**, selected from AppleDouble `._*.mp4` files in the Google Drive `Lacie/VineDatesUpdated` folder. These sidecar files are **not videos**. Matching `.sub.mp4` files found in Dropbox `VineSubs` were zero bytes and are not used as media. No video bytes, timestamps, captions, or hashtags have been recovered for these ten entries. The website marks each as **MEDIA PENDING**, and the catalog retains provenance in `sourceEvidence`. These are not counted as playable restored clips.
 
-The first ten entries are **identifier-only** records derived from AppleDouble `._*.mp4` filenames observed in the Google Drive `Lacie/VineDatesUpdated` folder. AppleDouble sidecars are **not playable videos**. Dropbox `VineSubs` had matching `.sub.mp4` filenames but they were zero-byte files. Therefore NO video files, captions, posting dates, or hashtags were restored for these entries. The site labels them MEDIA PENDING. Video files must be recovered and hosted separately before playback works.
+To complete the import, locate and upload the real `ID.mp4` file for each Vine to a public video host, then fill the `videoUrl` on its matching catalog record and rebuild `docs/`.
+
+
+## First playable media batch: 10 user-uploaded clips (Oct 29, 2026)
+
+The first playable demo batch contains exactly ten user-supplied videos; the original files are preserved outside this GitHub repository. Web-optimized MP4s and JPEG posters live at `docs/media/` and are served without an external media provider. Public staging media is available through the GitHub Pages deployment. The files include one roughly ten-second ABC clip; do not assume every uploaded clip was a six-second Vine post.
+
+Most filenames (e.g. `IMG_2915.mp4`) **are not original Vine identifiers**. To avoid inventing history, each receives a stable 11-character **archive reference** formed from its content hash (prefixed with `m`); the catalog labels these records `idKind: archive` and leaves original Vine ID, posting date, hashtags, and caption pending. When authentic IDs are recovered, add a verified `originalVineId` mapping while preserving published archive reference URLs (add redirects or aliases later).
+
+`data/pending_vines.json` preserves the previous ten sidecar-only metadata references separately; these are intentionally excluded from the playable gallery. `mediaPath` and `posterPath` are site-relative, resolved by `tools/build.py` against the configured environment base path. Nothing links permanently to `tuckerbrennan.github.io`, so the final domain switch remains portable.
+
+To add a video from a local source, create an optimized MP4 and JPEG thumbnail under `docs/media/<archive-ref>.*`, add its record to `data/vines.json`, build with `python3 tools/build.py`, and replace `docs/` with `dist/`. Never put original full-resolution source footage into the public repository.

@@ -32,7 +32,7 @@ def esc(value):
 
 
 def route(page=""):
-    """Resolve a portable site path; do not append slashes to asset filenames."""
+    """Resolve a portable site path; keep asset filenames extension-suffixed."""
     clean = page.strip("/")
     return BASE_PATH + clean + ("/" if clean and not Path(clean).suffix else "")
 
@@ -101,18 +101,18 @@ def read_catalog():
         raw_caption = row.get("rawCaption")
         if raw_caption is not None and not isinstance(raw_caption, str):
             raise ValueError(f"Row {n}: rawCaption must be text or null")
-        vurl = safe_url(row.get("videoUrl"))
-        if row.get("videoUrl") and not vurl:
+        vurl = route(row["mediaPath"]) if row.get("mediaPath") else safe_url(row.get("videoUrl"))
+        if row.get("videoUrl") and not row.get("mediaPath") and not vurl:
             raise ValueError(f"Row {n}: videoUrl must be a fully-qualified http(s) URL")
-        poster = safe_url(row.get("thumbnailUrl"))
-        if row.get("thumbnailUrl") and not poster:
+        poster = route(row["posterPath"]) if row.get("posterPath") else safe_url(row.get("thumbnailUrl"))
+        if row.get("thumbnailUrl") and not row.get("posterPath") and not poster:
             raise ValueError(f"Row {n}: thumbnailUrl must be a fully-qualified http(s) URL")
         d, date_sort = published_date(row.get("publishedAt"))
         extra = row.get("tags") or []
         if not isinstance(extra, list):
             raise ValueError(f"Row {n}: tags must be a list")
         tags = tags_for(raw_caption, extra)
-        clean.append({"vineId": vid, "videoUrl": vurl, "thumbnailUrl": poster, "rawCaption": raw_caption, "publishedAt": date_sort or None, "dateLabel": d, "tags": tags, "sourceFilename": row.get("sourceFilename") or None, "restoredAt": row.get("restoredAt") or None})
+        clean.append({"vineId": vid, "idKind": row.get("idKind") or "vine", "videoUrl": vurl, "thumbnailUrl": poster, "rawCaption": raw_caption, "publishedAt": date_sort or None, "dateLabel": d, "tags": tags, "sourceFilename": row.get("sourceFilename") or None, "restoredAt": row.get("restoredAt") or None})
     # newest first, unknown dates at the end; then alphabetical ID so builds deterministic
     clean.sort(key=lambda r: (r["publishedAt"] is None, -(int(r["publishedAt"].replace("-", ""))) if r["publishedAt"] else 0, r["vineId"]))
     return clean
@@ -144,7 +144,7 @@ def thumb(v):
     vid = v["vineId"]
     if v["videoUrl"]:
         poster = f' poster="{esc(v["thumbnailUrl"])}"' if v["thumbnailUrl"] else ""
-        content = f'<video muted loop playsinline preload="none"{poster} data-preview-src="{esc(v["videoUrl"])}" aria-label="Preview of Vine {esc(vid)}"></video>'
+        content = f'<video muted loop playsinline preload="none"{poster} data-preview-src="{esc(v["videoUrl"])}" aria-label="Preview of archived clip {esc(vid)}"></video>'
     elif v["thumbnailUrl"]:
         content = f'<img src="{esc(v["thumbnailUrl"])}" loading="lazy" alt="Thumbnail for Vine {esc(vid)}">'
     else:
@@ -154,14 +154,14 @@ def thumb(v):
 
 def card(v):
     vid=v["vineId"]
-    excerpt = (v["rawCaption"] or "Caption not recovered").replace("\n", " ")
+    excerpt = (v["rawCaption"] or ("Recovered video · " + (v["sourceFilename"] or vid) if v["idKind"] == "archive" else "Caption not recovered")).replace("\n", " ")
     if len(excerpt)>110: excerpt=excerpt[:107]+"…"
     return f'<article class="vine-card"><a href="{esc(route("v/"+vid))}" aria-label="View Vine {esc(vid)}">{thumb(v)}</a><h3><a href="{esc(route("v/"+vid))}">{esc(excerpt)}</a></h3><p class="card-meta"><span>{esc(v["dateLabel"])}</span>{"<span class=status>• Metadata pending</span>" if not v["rawCaption"] or not v["publishedAt"] else ""}</p></article>'
 
 
 def browser(vines, title="Archive", tag=None):
     label = "FILTER / ARCHIVE" if tag else "THE COLLECTION / ALL TAPES"
-    intro = f'Every recovered clip bearing #{esc(tag)}.' if tag else 'Browse the collection. Search captions, hashtags or original Vine IDs.'
+    intro = f'Every recovered clip bearing #{esc(tag)}.' if tag else 'Browse original footage. Search archived filenames, Vine IDs, captions or hashtags.'
     banner = heading("archive", label, f'#{esc(tag)}' if tag else 'THE ARCHIVE.', intro, "Home / Hashtag" if tag else "Home / Archive")
     empty_copy = "No clips are cataloged yet. The archive will populate as original files are imported." if not vines else "No matching Vines. Try another search."
     search = (f'<section class="browser"><div class="wrap"><div class="filters">'
@@ -183,9 +183,9 @@ def browser(vines, title="Archive", tag=None):
 
 def home(vines, tags):
     count=len(vines)
-    hero = f'''<section class="herowrap"><div class="wrap hero"><div class="hero-copy"><p class="eyebrow mini"><span class="signal"></span> THE OG VHS ARCHIVAL PROJECT · EST. 2013</p><h1 class="hero-title">THE INTERNET<br><span class="outline">USED TO</span><br><span class="last">LOOP.</span></h1><p class="lead">A permanent home for six-second artifacts. The fleeting, the absurd, and the very good bad ideas we once posted online.</p><a class="pill-link" href="{esc(route('archive'))}">Explore the archive <span aria-hidden="true">↗</span></a></div><div class="hero-art" role="img" aria-label="Illustration of a vintage OG VHS videocassette"><div class="float-stamp">PRESERVING<br>THE INTERNET</div><div class="tape"><div class="tape-head"><small>THE ORIGINAL COLLECTION</small><strong>OG VHS</strong></div><div class="reels"><div class="reel"></div><div class="reel"></div></div><div class="tape-bottom">SIX SECONDS · INFINITE REWINDS</div></div></div></div></section><div class="strip"><div class="wrap strip-inner"><span class="mini">INDEPENDENT DIGITAL PRESERVATION</span><span class="dots" aria-hidden="true">• • •</span><span class="mini">{count} VINE IDS INDEXED</span></div></div>'''
+    hero = f'''<section class="herowrap"><div class="wrap hero"><div class="hero-copy"><p class="eyebrow mini"><span class="signal"></span> THE OG VHS ARCHIVAL PROJECT · EST. 2013</p><h1 class="hero-title">THE INTERNET<br><span class="outline">USED TO</span><br><span class="last">LOOP.</span></h1><p class="lead">A permanent home for six-second artifacts. The fleeting, the absurd, and the very good bad ideas we once posted online.</p><a class="pill-link" href="{esc(route('archive'))}">Explore the archive <span aria-hidden="true">↗</span></a></div><div class="hero-art" role="img" aria-label="Illustration of a vintage OG VHS videocassette"><div class="float-stamp">PRESERVING<br>THE INTERNET</div><div class="tape"><div class="tape-head"><small>THE ORIGINAL COLLECTION</small><strong>OG VHS</strong></div><div class="reels"><div class="reel"></div><div class="reel"></div></div><div class="tape-bottom">SIX SECONDS · INFINITE REWINDS</div></div></div></div></section><div class="strip"><div class="wrap strip-inner"><span class="mini">INDEPENDENT DIGITAL PRESERVATION</span><span class="dots" aria-hidden="true">• • •</span><span class="mini">{count} VIDEOS CATALOGED</span></div></div>'''
     latest = "".join(card(v) for v in vines[:8]) if vines else empty_state()
-    return hero+f'''<section class="section"><div class="wrap"><div class="section-head"><div><p class="mini lime">01 / THE COLLECTION</p><h2 class="section-title">In the<br>archive.</h2></div><a class="underline-link" href="{esc(route('archive'))}">SEE ALL TAPES ↗</a></div>{f'<div class="gallery">{latest}</div>' if vines else latest}</div></section><section class="section" style="padding-top:0"><div class="wrap"><div class="section-head"><div><p class="mini lime">02 / WHY IT EXISTS</p><h2 class="section-title">A little piece<br>of the internet.</h2></div></div><div class="feature-row"><div class="feature"><b>01 — KEEP IT</b><h3>Too good to disappear.</h3><p>Platforms vanish. Original files do not have to. This is about keeping the odd little moments intact.</p></div><div class="feature"><b>02 — FIND IT</b><h3>Every clip has an ID.</h3><p>Each recovered Vine retains its original 11-character identifier, independent of where the video is stored.</p></div><div class="feature"><b>03 — REMEMBER IT</b><h3>Original words matter.</h3><p>Captions, dates and hashtags will be restored as evidence is found. Missing information stays missing.</p></div></div></div></section><section class="banner"><div class="wrap banner-in"><div><p class="mini">A NOTE FROM THE ARCHIVE</p><h2>THE FORMAT WAS TEMPORARY.<br>THE MEMORIES AREN'T.</h2><p>A growing independent record of OG VHS and an internet that moved six seconds at a time.</p></div><a href="{esc(route('about'))}">ABOUT THIS PROJECT ↗</a></div></section>'''
+    return hero+f'''<section class="section"><div class="wrap"><div class="section-head"><div><p class="mini lime">01 / THE COLLECTION</p><h2 class="section-title">In the<br>archive.</h2></div><a class="underline-link" href="{esc(route('archive'))}">SEE ALL TAPES ↗</a></div>{f'<div class="gallery">{latest}</div>' if vines else latest}</div></section><section class="section" style="padding-top:0"><div class="wrap"><div class="section-head"><div><p class="mini lime">02 / WHY IT EXISTS</p><h2 class="section-title">A little piece<br>of the internet.</h2></div></div><div class="feature-row"><div class="feature"><b>01 — KEEP IT</b><h3>Too good to disappear.</h3><p>Platforms vanish. Original files do not have to. This is about keeping the odd little moments intact.</p></div><div class="feature"><b>02 — FIND IT</b><h3>Every clip has an ID.</h3><p>Each clip has a permanent archive reference. Original Vine IDs are linked only when verified.</p></div><div class="feature"><b>03 — REMEMBER IT</b><h3>Original words matter.</h3><p>Captions, dates and hashtags will be restored as evidence is found. Missing information stays missing.</p></div></div></div></section><section class="banner"><div class="wrap banner-in"><div><p class="mini">A NOTE FROM THE ARCHIVE</p><h2>THE FORMAT WAS TEMPORARY.<br>THE MEMORIES AREN'T.</h2><p>A growing independent record of OG VHS and an internet that moved six seconds at a time.</p></div><a href="{esc(route('about'))}">ABOUT THIS PROJECT ↗</a></div></section>'''
 
 
 def tags_page(tag_counts):
@@ -208,11 +208,14 @@ def detail_page(v):
         open_action=loop_action=''
     taglist=''.join(f'<a class="tag-pill" href="{esc(route("tag/"+quote(t,safe="")))}">#{esc(t)}</a>' for t in v['tags']) if v['tags'] else '<p class="muted">No verified hashtags</p>'
     meta_status = 'CAPTION PENDING' if not v['rawCaption'] else 'CAPTION RECOVERED'
-    return f'''<div class="wrap"><div class="record"><div><p class="crumb"><a href="{esc(route('archive'))}">← BACK TO ARCHIVE</a></p><div class="player" style="margin-top:23px">{player}</div></div><aside><div class="record-head"><p class="mini lime">ORIGINAL VINE RECORD</p><h1>{esc(vid)}</h1><span class="mini muted">{esc(v['dateLabel'])}</span></div><div class="record-section"><h2 class="mini">CAPTION / ORIGINAL TEXT</h2><div class="caption">{caption_html(v['rawCaption'])}</div></div><div class="record-section"><h2 class="mini">TAGS / INDEXED</h2><div class="record-tags">{taglist}</div></div><div class="record-section"><h2 class="mini">ARCHIVE INFORMATION</h2><p class="mini muted">VINE ID: {esc(vid)}</p><p class="mini muted">STATUS: {meta_status}</p><p class="mini muted">SOURCE: {esc(v['sourceFilename'] or 'NOT DOCUMENTED')}</p></div><div class="record-actions">{open_action}<button class="smallbutton" id="copy-link" type="button">COPY LINK</button>{loop_action}</div></aside></div></div>'''
+    archive_id = v["idKind"] == "archive"
+    record_label = "ARCHIVE CLIP · ORIGINAL VINE ID PENDING" if archive_id else "ORIGINAL VINE RECORD"
+    id_label = "ARCHIVE REF" if archive_id else "VINE ID"
+    return f'''<div class="wrap"><div class="record"><div><p class="crumb"><a href="{esc(route('archive'))}">← BACK TO ARCHIVE</a></p><div class="player" style="margin-top:23px">{player}</div></div><aside><div class="record-head"><p class="mini lime">{record_label}</p><h1>{esc(vid)}</h1><span class="mini muted">{esc(v['dateLabel'])}</span></div><div class="record-section"><h2 class="mini">CAPTION / ORIGINAL TEXT</h2><div class="caption">{caption_html(v['rawCaption'])}</div></div><div class="record-section"><h2 class="mini">TAGS / INDEXED</h2><div class="record-tags">{taglist}</div></div><div class="record-section"><h2 class="mini">ARCHIVE INFORMATION</h2><p class="mini muted">{id_label}: {esc(vid)}</p><p class="mini muted">STATUS: {meta_status}</p><p class="mini muted">SOURCE: {esc(v['sourceFilename'] or 'NOT DOCUMENTED')}</p></div><div class="record-actions">{open_action}<button class="smallbutton" id="copy-link" type="button">COPY LINK</button>{loop_action}</div></aside></div></div>'''
 
 
 def about_page(count):
-    return heading("about", "INDEPENDENT ARCHIVE / OUR MISSION", "WHY OG VHS?", "The format was temporary. The memories aren't.", "Home / About")+f'''<section class="section"><div class="wrap"><div class="about-text"><p>For a while, the internet was built around <strong>six seconds at a time</strong>. Tiny loops became jokes, conversations, odd experiments, and little accidental time capsules.</p><p><strong>OG VHS</strong> is an independent project to preserve original Vine posts before they vanish into forgotten hard drives, broken links, and out-of-date platforms.</p><p>The archive currently contains <strong>{count} indexed Vine ID{'s' if count != 1 else ''} (playable media pending)</strong>. The goal is accuracy over completeness: the original Vine ID is kept as the permanent identity for a clip, and captions, hashtags, and dates are included only when they're known.</p><p>No made-up quotes or fabricated posting dates. If we haven't recovered a caption, you'll see <span class="code">Caption not recovered</span>. It's a work in progress, and that's part of its story.</p><p>The public archive is read-only. Source files are held separately from this site, so the collection can move to OGVHS.com or another host without losing its identity.</p></div></div></section>'''
+    return heading("about", "INDEPENDENT ARCHIVE / OUR MISSION", "WHY OG VHS?", "The format was temporary. The memories aren't.", "Home / About")+f'''<section class="section"><div class="wrap"><div class="about-text"><p>For a while, the internet was built around <strong>six seconds at a time</strong>. Tiny loops became jokes, conversations, odd experiments, and little accidental time capsules.</p><p><strong>OG VHS</strong> is an independent project to preserve original Vine posts before they vanish into forgotten hard drives, broken links, and out-of-date platforms.</p><p>The archive currently contains <strong>{count} cataloged record{'s' if count != 1 else ''}</strong>. The goal is accuracy over completeness: the original Vine ID is retained when verifiable; otherwise a stable archival reference is used until identification. Captions, hashtags, and posting dates appear only when independently verified.</p><p>No made-up quotes or fabricated posting dates. If we haven't recovered a caption, you'll see <span class="code">Caption not recovered</span>. It's a work in progress, and that's part of its story.</p><p>The public archive is read-only. Original source files are held separately from the optimized web copies, so the collection can move to OGVHS.com or another host without losing its identity.</p></div></div></section>'''
 
 
 def write(page, contents):
@@ -230,6 +233,8 @@ def build():
     if DIST.exists(): shutil.rmtree(DIST)
     DIST.mkdir()
     shutil.copytree(ROOT/"assets",DIST/"assets")
+    media_source = ROOT/"media" if (ROOT/"media").exists() else ROOT/"docs"/"media"
+    if media_source.exists(): shutil.copytree(media_source,DIST/"media")
     (DIST/"data").mkdir()
     # Client only receives public archival information, never private source notes.
     (DIST/"data"/"catalog.json").write_text(json.dumps(vines,ensure_ascii=False,separators=(',',':')),encoding="utf-8")
@@ -242,7 +247,7 @@ def build():
         slug=quote(tag,safe="")
         write("tag/"+slug,chrome(browser(clips,tag=tag),f"#{tag}",active="tags",page="tag/"+slug))
     for v in vines:
-        write("v/"+v['vineId'],chrome(detail_page(v),f"Vine {v['vineId']}",page="v/"+v['vineId'],description=(v['rawCaption'] or f"Archived Vine {v['vineId']}")))
+        write("v/"+v['vineId'],chrome(detail_page(v),f"Archived clip {v['vineId']}" if v["idKind"] == "archive" else f"Vine {v['vineId']}",page="v/"+v['vineId'],description=(v['rawCaption'] or f"Archived clip {v['vineId']}")))
     missing=heading("404", "NOT FOUND", "TAPE MISSING.", "This record isn't in the archive yet.", "Home / Missing")+f'<section class="section"><div class="wrap"><a class="pill-link" href="{route("archive")}">BACK TO ARCHIVE ↗</a></div></section>'
     (DIST/"404.html").write_text(chrome(missing,"Not Found"),encoding="utf-8")
     (DIST/"robots.txt").write_text("User-agent: *\nDisallow: /\n" if ENV=="staging" else "User-agent: *\nAllow: /\nSitemap: "+SITE_URL+"/sitemap.xml\n")
